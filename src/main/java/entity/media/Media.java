@@ -48,14 +48,9 @@ public class Media {
         this.quantity = updated_quantity;
         return updated_quantity;
     }
-
-    public Media getMediaById(int id) throws SQLException{
-        String sql = "SELECT * FROM Media ;";
-        Statement stm = AIMSDB.getConnection().createStatement();
-        ResultSet res = stm.executeQuery(sql);
-		if(res.next()) {
-
-            return new Media()
+    
+    private Media getMediaFromQueryResult(ResultSet res) throws SQLException {
+        return new Media()
                 .setId(res.getInt("id"))
                 .setTitle(res.getString("title"))
                 .setQuantity(res.getInt("quantity"))
@@ -63,6 +58,14 @@ public class Media {
                 .setMediaURL(res.getString("imageUrl"))
                 .setPrice(res.getInt("price"))
                 .setType(res.getString("type"));
+    }
+
+    public Media getMediaById(int id) throws SQLException{
+        String sql = "SELECT * FROM Media ;";
+        Statement stm = AIMSDB.getConnection().createStatement();
+        ResultSet res = stm.executeQuery(sql);
+		if(res.next()) {
+            return getMediaFromQueryResult(res);
         }
         return null;
     }
@@ -72,14 +75,7 @@ public class Media {
         ResultSet res = stm.executeQuery("select * from Media");
         ArrayList medium = new ArrayList<>();
         while (res.next()) {
-            Media media = new Media()
-                .setId(res.getInt("id"))
-                .setTitle(res.getString("title"))
-                .setQuantity(res.getInt("quantity"))
-                .setCategory(res.getString("category"))
-                .setMediaURL(res.getString("imageUrl"))
-                .setPrice(res.getInt("price"))
-                .setType(res.getString("type"));
+            Media media = getMediaFromQueryResult(res);
             medium.add(media);
         }
         return medium;

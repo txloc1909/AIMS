@@ -35,7 +35,7 @@ public class PlaceRushOrderController extends PlaceOrderController {
         return true;
     }
 
-    private boolean checkIfProvinceSupportRushOrder(String province) {
+    public boolean checkIfProvinceSupportRushOrder(String province) {
         String[] supportProvinces = {"Hà Nội", "Hồ Chí Minh", "Đà Nẵng"};
 
         return Arrays.asList(supportProvinces).contains(province);

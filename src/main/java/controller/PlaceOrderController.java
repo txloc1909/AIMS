@@ -19,12 +19,13 @@ import views.screen.popup.PopupScreen;
  * This class controls the flow of place order usecase in our AIMS project
  * @author nguyenlm
  */
-public class PlaceOrderController extends BaseController{
+public class PlaceOrderController extends controller.BaseController {
 
     /**
      * Just for logging purpose
      */
     private static Logger LOGGER = utils.Utils.getLogger(PlaceOrderController.class.getName());
+
 
     /**
      * This method checks the avalibility of product when user click PlaceOrder button
@@ -32,6 +33,9 @@ public class PlaceOrderController extends BaseController{
      */
     public void placeOrder() throws SQLException{
         Cart.getCart().checkAvailabilityOfProduct();
+
+        Order order = createOrder();
+        Invoice invoice = createInvoice(order);
     }
 
     /**
@@ -83,18 +87,61 @@ public class PlaceOrderController extends BaseController{
     }
     
     public boolean validatePhoneNumber(String phoneNumber) {
-    	// TODO: your work
-    	return false;
+        // check if phoneNumber is null
+        if (phoneNumber == null)
+            return false;
+
+        // check if phoneNumber has 10 digits
+        if (phoneNumber.length() != 10)
+            return false;
+
+        // check if phoneNumber starts with 0
+        if (!phoneNumber.startsWith("0"))
+            return false;
+
+        // check if phoneNumber contains only number
+        if (!phoneNumber.matches("[0-9]+"))
+            return false;
+
+        return true;
+    }
+
+    private static boolean checkStringContainsSpecialChars(String s) {
+        char[] special_chars = {'!', '@', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+'}; // just for now
+        for(int i = 0; i < special_chars.length; i++) {
+            if (s.contains(String.valueOf(special_chars[i])))
+                return true;
+        }
+
+        return false;
     }
     
     public boolean validateName(String name) {
-    	// TODO: your work
-    	return false;
+        // check if name is not empty or null
+        if (name.length() == 0 || name == null)
+            return false;
+
+        // check if name contains digits
+        if (name.matches(".*\\d.*"))
+            return false;
+
+        // check if name contains special characters
+        if (checkStringContainsSpecialChars(name))
+            return false;
+
+        return true;
     }
     
     public boolean validateAddress(String address) {
-    	// TODO: your work
-    	return false;
+        // check if address is not empty or null
+        if (address.length() == 0 || address == null)
+            return false;
+
+        // check if name contains special characters
+        if (checkStringContainsSpecialChars(address))
+            return false;
+
+        return true;
     }
     
 
