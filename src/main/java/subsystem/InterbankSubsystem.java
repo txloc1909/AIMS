@@ -26,7 +26,6 @@ public class InterbankSubsystem implements InterbankInterface {
 	 * represents an Interbank subsystem.
 	 */
 	public InterbankSubsystem() {
-		String str = new String();
 		this.ctrl = new InterbankSubsystemController();
 	}
 
